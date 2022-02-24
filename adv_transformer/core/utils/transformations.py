@@ -25,7 +25,7 @@ import spacy
 import string
 import emoji
 import re
-from textblob import TextBlob
+from textblob_de import TextBlobDE as TextBlob
 from tensorflow.keras.preprocessing.text import text_to_word_sequence
 from tqdm import tqdm
 from adv_transformer.core.utils.flags import FLAGS

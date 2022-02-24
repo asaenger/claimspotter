@@ -1,25 +1,3 @@
-# Copyright (C) 2020 IDIR Lab - UT Arlington
-#
-#     This program is free software: you can redistribute it and/or modify
-#     it under the terms of the GNU General Public License v3 as published by
-#     the Free Software Foundation.
-#
-#     This program is distributed in the hope that it will be useful,
-#     but WITHOUT ANY WARRANTY; without even the implied warranty of
-#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#     GNU General Public License for more details.
-#
-#     You should have received a copy of the GNU General Public License
-#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
-#
-# Contact Information:
-#     See: https://idir.uta.edu/cli.html
-#
-#     Chengkai Li
-#     Box 19015
-#     Arlington, TX 76019
-#
-
 from absl import app, flags, logging
 import sys
 
@@ -61,7 +39,7 @@ flags.DEFINE_integer('cs_model_save_interval', 1, 'Numbers of epochs before mode
 flags.DEFINE_integer('cs_k_fold', 4, 'Number of folds for k-fold cross validation')
 flags.DEFINE_bool('cs_restore_and_continue', False, 'Restore previous training session and continue')
 flags.DEFINE_integer('cs_batch_size_reg', 24, 'Size of the batch.')
-flags.DEFINE_integer('cs_batch_size_adv', 24, 'Size of the batch when adversarial training.')
+flags.DEFINE_integer('cs_batch_size_adv', 12, 'Size of the batch when adversarial training.')
 
 flags.DEFINE_integer('cs_train_steps', 15, 'Number of epochs to run.')
 flags.DEFINE_float('cs_lr', 5e-5, 'Learning rate during optimization.')
@@ -72,11 +50,13 @@ flags.DEFINE_bool('cs_adv_train', False, 'Use adversarial training?')
 flags.DEFINE_integer('cs_perturb_id', 6, "Index in [('pos', 'seg', 'tok'), ('pos', 'seg'), ('pos', 'tok'), ('seg', 'tok'), ('pos',), ('seg',), ('tok',)] to perturb")
 flags.DEFINE_integer('cs_adv_type', 0, '0 for AT, 1 for VAT')
 flags.DEFINE_float('cs_lambda', 0.25, 'Coefficient of adversarial loss')
+flags.DEFINE_float('cs_lambda_eps', 10, 'Coefficient of adversarial norm weights')
 flags.DEFINE_bool('cs_combine_reg_adv_loss', True, 'Add loss of regular and adversarial loss during training')
-flags.DEFINE_float('cs_perturb_norm_length', 2.0, 'Norm length of adversarial perturbation')
+flags.DEFINE_list('cs_perturb_norm_length_range', [0.5, 5.0], 'Norm length bounds for adversarial perturbation (learned via sgd)')
 
 # Model Architecture
-flags.DEFINE_string('cs_tfm_type', 'bert-base-uncased', 'Type of transformer; see https://huggingface.co/transformers/pretrained_models.html')
+flags.DEFINE_string('cs_tfm_type', 'bert-base-german-cased', 'Type of transformer; see https://huggingface.co/transformers/pretrained_models.html')
+flags.DEFINE_integer('cs_hidden_size', 768, 'Embedding size')
 flags.DEFINE_string('cs_pool_strat', 'first', 'How to pool: using average of all steps or [CLS]')
 flags.DEFINE_bool('cs_tfm_ft_embed', False, 'Train transf embedding layer')
 flags.DEFINE_bool('cs_tfm_ft_pooler', True, 'Train transf pooler layer')
